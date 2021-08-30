@@ -1,7 +1,7 @@
 import React from "react";
 import TableItem from "./tableItem";
 
-const Table = ({ users, handleDelete }) => {
+const Table = ({ users, ...rest }) => {
   return (
     <table className="table table-hover">
       <thead>
@@ -11,12 +11,13 @@ const Table = ({ users, handleDelete }) => {
           <th scope="col">Профессия</th>
           <th scope="col">Встретился, раз</th>
           <th scope="col">Оценка</th>
+          <th scope="col">Избранное</th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         {users.map((user, index) => (
-          <TableItem user={user} handleDelete={handleDelete} key={index} />
+          <TableItem user={user} {...rest} key={index} />
         ))}
       </tbody>
     </table>

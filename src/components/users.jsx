@@ -1,21 +1,13 @@
-import React, { useState } from "react";
-import api from "../api";
+import React from "react";
+
 import Table from "./table";
 import SearchStatus from "./searchStatus";
 
-const Users = () => {
-  const [users, setUsers] = useState(api.users.fetchAll());
-
-  const handleDelete = (userId) => {
-    setUsers(users.filter((user) => user._id !== userId));
-  };
-
+const Users = ({ users, ...rest }) => {
   return (
     <div className="container-sm mt-2">
       <SearchStatus length={users.length} />
-      {users.length > 0 ? (
-        <Table users={users} handleDelete={handleDelete} />
-      ) : null}
+      {users.length > 0 ? <Table users={users} {...rest} /> : null}
     </div>
   );
 };
