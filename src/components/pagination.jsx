@@ -1,16 +1,16 @@
 import React from "react";
 
-const Pagination = ({ arr, onPageNumber }) => {
+const Pagination = ({ arrayPageNumbers, onPageNumber, pageNumber }) => {
+  const activePage = pageNumber + 1;
   return (
     <nav aria-label="...">
       <ul className="pagination">
-        {arr.map((page) => (
-          <li className="page-item" key={page}>
-            <a
-              className="page-link"
-              href="#"
-              onClick={() => onPageNumber(page)}
-            >
+        {arrayPageNumbers.map((page) => (
+          <li
+            className={"page-item " + (activePage === page ? "active" : null)}
+            key={page}
+          >
+            <a className="page-link" onClick={() => onPageNumber(page)}>
               {page}
             </a>
           </li>

@@ -13,3 +13,14 @@ export const getNoun = (number, one, two, five) => {
   }
   return five;
 };
+
+export const createPages = (arr1, size) => {
+  let pages = [];
+  for (let i = 0; i < arr1.length; i += size) {
+    let elem = arr1.slice(i, i + size);
+    pages.push(elem);
+  }
+  return pages;
+};
+export const createNumbers = (length) =>
+  Array.from({ length }, (v, k) => k + 1);

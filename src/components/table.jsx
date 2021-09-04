@@ -16,9 +16,10 @@ const Table = ({ users, ...rest }) => {
         </tr>
       </thead>
       <tbody>
-        {users.map((user, index) => (
-          <TableItem user={user} {...rest} key={index} />
-        ))}
+        {users &&
+          users.map((user, index) => (
+            <TableItem user={user} {...rest} key={index} />
+          ))}
       </tbody>
     </table>
   );
