@@ -5,13 +5,11 @@ const SearchStatus = ({ length }) => {
     const humanWord = getNoun(length, "человек", "человека", "человек");
     const verbWord = getNoun(length, "тусанет", "тусанут", "тусанет");
     const fullList = (
-        <span className="badge bg-primary">
+        <h3 className="bg-success" style={{ color: "#ffffff", padding: "5px" }}>
             {length} {humanWord} {verbWord} с тобой сегодня
-        </span>
+        </h3>
     );
-    const emptyList = (
-        <span className="badge bg-danger">Никто с тобой не тусанет</span>
-    );
+    const emptyList = <h3 className="bg-danger">Никто с тобой не тусанет</h3>;
     const str = length > 0 ? fullList : emptyList;
     return str;
 };

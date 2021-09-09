@@ -10,7 +10,8 @@ const TableItem = ({ user, onToggleBookmark, onDelete, maxScore }) => {
             <td>
                 <Qualitie qualities={user.qualities} />
             </td>
-            <td>{user.profession.name}</td>
+            {/* {user.profession.name} */}
+            <td>100</td>
             <td>{user.completedMeetings}</td>
             <td>
                 {user.rate}/{maxScore}
