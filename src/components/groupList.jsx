@@ -11,7 +11,7 @@ const GroupList = ({
 }) => {
     const isArray = Array.isArray(items);
 
-    const useObject = () => {
+    const adoptedObject = () => {
         return Object.keys(items).map((item) => (
             <li
                 key={items[item][valueProperty]}
@@ -29,7 +29,7 @@ const GroupList = ({
         ));
     };
 
-    const useArray = () => {
+    const adoptedArray = () => {
         return items.map((item) => (
             <li
                 key={item[valueProperty]}
@@ -47,7 +47,7 @@ const GroupList = ({
     };
     return (
         <ul className="list-group">
-            {isArray ? useArray() : useObject()}
+            {isArray ? adoptedArray() : adoptedObject()}
             <button className="btn btn-secondary mt-2" onClick={clearFilter}>
                 Сбросить
             </button>
