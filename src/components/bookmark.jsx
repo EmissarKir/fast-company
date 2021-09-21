@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Bookmark = ({ isFavorites, userId, onToggleBookmark }) => {
+const Bookmark = ({ isBookmark, userId, onToggleBookmark }) => {
     const bookMarkFill = <i className="bi bi-bookmark-check-fill"></i>;
     const bookMarkEmpty = <i className="bi bi-bookmark"></i>;
     return (
         <button className="btn" onClick={() => onToggleBookmark(userId)}>
-            {isFavorites ? bookMarkFill : bookMarkEmpty}
+            {isBookmark ? bookMarkFill : bookMarkEmpty}
         </button>
     );
 };
 Bookmark.propTypes = {
-    isFavorites: PropTypes.bool,
+    isBookmark: PropTypes.bool.isRequired,
     userId: PropTypes.string.isRequired,
     onToggleBookmark: PropTypes.func.isRequired
 };

@@ -1,31 +1,25 @@
 import React from "react";
-import TableItem from "./tableItem";
+import TableHeader from "./tableHeader";
+import TableBody from "./tableBody";
 import PropTypes from "prop-types";
 
-const Table = ({ users, ...rest }) => {
+const Table = ({ onSort, selectedSort, columns, data, children }) => {
     return (
         <table className="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Имя</th>
-                    <th scope="col">Качества</th>
-                    <th scope="col">Профессия</th>
-                    <th scope="col">Встретился, раз</th>
-                    <th scope="col">Оценка</th>
-                    <th scope="col">Избранное</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {users.map((user, index) => (
-                    <TableItem user={user} {...rest} key={index} />
-                ))}
-            </tbody>
+            {children || (
+                <>
+                    <TableHeader {...{ onSort, selectedSort, columns }} />
+                    <TableBody {...{ columns, data }} />
+                </>
+            )}
         </table>
     );
 };
 Table.propTypes = {
-    users: PropTypes.array.isRequired
+    data: PropTypes.array,
+    columns: PropTypes.object,
+    onSort: PropTypes.func,
+    selectedSort: PropTypes.object,
+    children: PropTypes.array
 };
-
 export default Table;

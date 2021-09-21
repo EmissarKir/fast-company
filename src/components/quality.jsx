@@ -1,6 +1,6 @@
 import React from "react";
 
-const Qualitie = ({ qualities }) => {
+const Quality = ({ qualities }) => {
     const str = qualities.map((item) => (
         <span key={item._id} className={"badge bg-" + item.color}>
             {item.name}
@@ -9,4 +9,4 @@ const Qualitie = ({ qualities }) => {
     return str;
 };
 
-export default Qualitie;
+export default Quality;
