@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import api from "../api";
 import Loader from "./loader";
 import QualitiesList from "./qualitiesList";
@@ -64,10 +63,6 @@ const User = () => {
         );
     }
     return <Loader />;
-};
-User.propTypes = {
-    match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
 };
 
 export default User;
