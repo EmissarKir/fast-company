@@ -1,13 +1,22 @@
 import React from "react";
 import Users from "./components/users";
+import NavBar from "./components/navBar";
+import { Route, Switch } from "react-router";
+import Main from "./layouts/main";
+import Login from "./layouts/login";
+import User from "./components/user";
 
 const App = () => {
     return (
-        <div className="col-lg-8 mx-auto p-3 py-md-5">
-            <main>
-                <Users />
-            </main>
-        </div>
+        <main>
+            <NavBar />
+            <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/users/:userId" component={User} />
+                <Route path="/users" component={Users} />
+                <Route path="/" component={Main} />
+            </Switch>
+        </main>
     );
 };
 

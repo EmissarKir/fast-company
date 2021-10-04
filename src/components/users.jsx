@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 import UsersTable from "./usersTable";
 import SearchStatus from "./searchStatus";
 import Pagination from "./pagination";
 import { paginate } from "./../utils/paginate";
-import PropTypes from "prop-types";
-import _ from "lodash";
 import GroupList from "./groupList";
 import api from "./../api/index";
+import Loader from "./loader";
 
 const Users = () => {
     const pageSize = 8;
@@ -28,7 +29,6 @@ const Users = () => {
         setUsers(users.filter((user) => user._id !== userId));
     };
     const handleToggleBookmark = (userId) => {
-        console.log(userId);
         const newUsers = [...users];
         const indexObj = newUsers.findIndex((user) => user._id === userId);
         newUsers[indexObj].bookmark = !newUsers[indexObj].bookmark;
@@ -104,7 +104,7 @@ const Users = () => {
             </div>
         );
     }
-    return "loading...";
+    return <Loader />;
 };
 
 Users.propTypes = {
