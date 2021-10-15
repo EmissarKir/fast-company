@@ -9,6 +9,7 @@ import { paginate } from "./../utils/paginate";
 import GroupList from "./groupList";
 import api from "./../api/index";
 import Loader from "./loader";
+import SearchField from "./searchField";
 
 const Users = () => {
     const pageSize = 8;
@@ -17,6 +18,7 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [users, setUsers] = useState();
+    const [searchValue, setSearchValue] = useState("");
     // const maxScore = 5;
 
     useEffect(() => {
@@ -40,6 +42,10 @@ const Users = () => {
         });
     }, []);
 
+    useEffect(() => {
+        setSelectedProf();
+    }, [searchValue]);
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
@@ -47,6 +53,7 @@ const Users = () => {
     const handleProfessionSelect = (item) => {
         setCurrentPage(1);
         setSelectedProf(item);
+        setSearchValue("");
     };
     const clearFilter = () => {
         setSelectedProf();
@@ -54,6 +61,10 @@ const Users = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
+    const handleSearch = ({ target }) => {
+        setSearchValue(target.value);
+    };
+
     if (users) {
         const filtredUsers = selectedProf
             ? users.filter((user) => user.profession.name === selectedProf.name)
@@ -66,7 +77,11 @@ const Users = () => {
             [sortBy.order]
         );
 
-        const usersCrop = paginate(sortedUsers, currentPage, pageSize);
+        const searchUsers = sortedUsers.filter((user) =>
+            user.name.toLowerCase().includes(searchValue.toLowerCase().trim())
+        );
+
+        const usersCrop = paginate(searchUsers, currentPage, pageSize);
 
         return (
             <div className="container-md mt-2">
@@ -84,6 +99,13 @@ const Users = () => {
 
                     <div className="col-md-9">
                         <SearchStatus length={count} />
+                        <SearchField
+                            type="text"
+                            name="search"
+                            value={searchValue}
+                            handleChange={handleSearch}
+                            placeholder="Search..."
+                        />
                         {count > 0 && (
                             <UsersTable
                                 users={usersCrop}

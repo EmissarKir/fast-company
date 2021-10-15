@@ -13,25 +13,28 @@ const NavBar = () => {
                             to="/"
                             exact
                         >
-                            Main
+                            Главная
                         </NavLink>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item active">
                         <NavLink
-                            className="nav-link"
-                            aria-current="page"
-                            to="/login"
-                        >
-                            Login
-                        </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink
-                            className="nav-link"
+                            className="nav-link "
                             aria-current="page"
                             to="/users"
+                            exact
                         >
-                            Users
+                            Пользователи
+                        </NavLink>
+                    </li>
+
+                    <li className="nav-item active">
+                        <NavLink
+                            className="nav-link "
+                            aria-current="page"
+                            to="/login"
+                            exact
+                        >
+                            Login
                         </NavLink>
                     </li>
                 </ul>

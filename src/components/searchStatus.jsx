@@ -5,7 +5,10 @@ const SearchStatus = ({ length }) => {
     const humanWord = getNoun(length, "человек", "человека", "человек");
     const verbWord = getNoun(length, "тусанет", "тусанут", "тусанет");
     const fullList = (
-        <h3 className="bg-primary" style={{ color: "#ffffff", padding: "5px" }}>
+        <h3
+            className="bg-primary text-center"
+            style={{ color: "#ffffff", padding: "5px" }}
+        >
             {length} {humanWord} {verbWord} с тобой сегодня
         </h3>
     );

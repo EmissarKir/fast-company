@@ -25,12 +25,12 @@ const User = () => {
             <div className="container-md mt-5">
                 <div className="row">
                     <div className="col-md-12 d-flex justify-content-center">
-                        <div className="card w-25">
+                        <div className="card w-50 shadow-lg">
                             <div className="card-body">
                                 <h5 className="card-title">{user.name}</h5>
                             </div>
                             <ul className="list-group list-group-flush">
-                                <li className="list-group-item">
+                                <li className="list-group-item text-info">
                                     Профессия: {user.profession.name}
                                 </li>
                                 <li className="list-group-item">
