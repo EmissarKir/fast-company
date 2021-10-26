@@ -1,5 +1,5 @@
 import React from "react";
-import { getNoun } from "../utils/index";
+import { getNoun } from "../../utils/index";
 
 const SearchStatus = ({ length }) => {
     const humanWord = getNoun(length, "человек", "человека", "человек");

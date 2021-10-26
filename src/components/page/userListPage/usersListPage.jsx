@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import UsersTable from "./usersTable";
-import SearchStatus from "./searchStatus";
-import Pagination from "./pagination";
-import { paginate } from "./../utils/paginate";
-import GroupList from "./groupList";
-import api from "./../api/index";
-import Loader from "./loader";
-import SearchField from "./searchField";
+import UsersTable from "../../ui/usersTable";
+import SearchStatus from "../../ui/searchStatus";
+import Pagination from "../../common/pagination";
+import { paginate } from "../../../utils/paginate";
+import GroupList from "../../common/groupList";
+import api from "../../../api/index";
+import Loader from "../../loader";
+import SearchField from "../../common/form/searchField";
 
-const Users = () => {
+const UsersListPage = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProffesion] = useState();
@@ -129,7 +129,7 @@ const Users = () => {
     return <Loader />;
 };
 
-Users.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.array
 };
-export default Users;
+export default UsersListPage;
