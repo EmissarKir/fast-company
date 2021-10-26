@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import api from "../../../api";
 import Loader from "../../loader";
 import QualitiesList from "../../ui/quialities";
-import CommentsList from "../../common/commentsList";
+import CommentsList from "../../ui/commentsList";
+import { validator } from "../../../utils/validator";
 
 const UserPage = () => {
     // const history = useHistory();
@@ -22,6 +23,10 @@ const UserPage = () => {
         content: "",
         pageId: userId
     });
+    const [errors, setErrors] = useState({});
+    useEffect(() => {
+        validate();
+    }, [newComment]);
 
     // загрузка комментариев пользователя и сортировка по времени
     // повторная загрзка при добавлении нового комментария
@@ -48,12 +53,33 @@ const UserPage = () => {
             [target.name]: target.value
         }));
     };
+    const validatorConfig = {
+        userId: {
+            isRequired: {
+                message: "Поле <Пользователь> обязательно для заполнения"
+            }
+        },
+        content: {
+            isRequired: {
+                message: "Поле <Сообщение> обязательно для заполнения"
+            }
+        }
+    };
 
+    const validate = () => {
+        const errors = validator(newComment, validatorConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+    const isValid = Object.keys(errors).length === 0;
     // прекращаем поведение по умолчанию
     // добавляем новый комментарий в LocalStorage
     // при успешном добавлении, добавляем новый комментарий в комментарии пользователя (в state)
     const handleSubmit = (e) => {
         e.preventDefault();
+        const isValid = validate();
+        if (!isValid) return;
+
         api.comments.add(newComment).then((dataUser) => {
             setComments((prevState) => [...prevState, dataUser]);
         });
@@ -147,6 +173,8 @@ const UserPage = () => {
                                 onChange={handleChange}
                                 onSubmit={handleSubmit}
                                 newComment={newComment}
+                                errors={errors}
+                                isValid={isValid}
                             />
                         )}
                     </div>

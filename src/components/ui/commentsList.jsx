@@ -1,4 +1,4 @@
-import Comment from "../common/comment";
+import Comment from "./comment";
 import React from "react";
 import PropTypes from "prop-types";
 import AddComments from "./addComments";
@@ -11,18 +11,19 @@ const CommentsList = ({ comments, ...rest }) => {
                     <AddComments {...rest} />
                 </div>
             </div>
-            <div className="card mb-3">
-                <div className="card-body ">
-                    <h2>Comments</h2>
-                    <hr />
-                    {comments &&
-                        comments.map((comment) => (
+            {comments.length !== 0 ? (
+                <div className="card mb-3">
+                    <div className="card-body ">
+                        <h2>Comments</h2>
+                        <hr />
+                        {comments.map((comment) => (
                             <div key={comment._id}>
                                 <Comment comment={comment} {...rest} />
                             </div>
                         ))}
+                    </div>
                 </div>
-            </div>
+            ) : null}
         </>
     );
 };

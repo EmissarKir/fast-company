@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TextField from "../../common/form/textField";
 import { validator } from "../../../utils/validator";
 import api from "../../../api";
@@ -47,6 +47,11 @@ const UserEditPage = ({ userId }) => {
             isEmail: {
                 message: "Электронная почта не корректна"
             }
+        },
+        qualities: {
+            isRequired: {
+                message: "Поле <Качество> обязательно для заполнения"
+            }
         }
     };
 
@@ -63,7 +68,7 @@ const UserEditPage = ({ userId }) => {
     }, []);
     // валидация полей пользователя
     useEffect(() => {
-        // validate();
+        validate();
     }, [data]);
 
     // загрузка профессий и качеств
@@ -122,9 +127,14 @@ const UserEditPage = ({ userId }) => {
     if (data) {
         return (
             <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-6 offset-md-3 shadow p-4">
-                        <h1 className="mb-4">Edit User Page</h1>
+                <div className="row position-relative">
+                    <Link to={`/users/${userId}`}>
+                        <button className="position-absolute top-0 start-0 btn btn-primary btn-md">
+                            <i className="bi bi-caret-left"></i> Назад
+                        </button>
+                    </Link>
+                    <div className="col-md-6 offset-md-3 shadow p-4 mt-sm-5">
+                        <h1 className="mb-4">Edit User</h1>
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 type="text"

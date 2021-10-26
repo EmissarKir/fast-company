@@ -1,9 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SelectField from "./form/selectField";
-import TextAreaField from "./form/textAreaField";
+import SelectField from "../common/form/selectField";
+import TextAreaField from "../common/form/textAreaField";
 
-const AddComments = ({ users, onChange, onSubmit, newComment }) => {
+const AddComments = ({
+    users,
+    onChange,
+    onSubmit,
+    newComment,
+    errors,
+    isValid
+}) => {
     return (
         <form onSubmit={onSubmit}>
             <h2>New comment</h2>
@@ -13,6 +20,7 @@ const AddComments = ({ users, onChange, onSubmit, newComment }) => {
                 name="userId"
                 defaultOption="Выберите пользователя..."
                 value={newComment.userId}
+                error={errors.userId}
             />
             <TextAreaField
                 label="Сообщение"
@@ -20,8 +28,13 @@ const AddComments = ({ users, onChange, onSubmit, newComment }) => {
                 onChange={onChange}
                 name="content"
                 value={newComment.content}
+                error={errors.content}
             />
-            <button type="submit" className="btn btn-primary">
+            <button
+                type="submit"
+                disabled={!isValid}
+                className="btn btn-primary float-end"
+            >
                 Опубликовать
             </button>
         </form>
@@ -34,7 +47,9 @@ AddComments.propTypes = {
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
     newComment: PropTypes.object,
+    errors: PropTypes.object,
     setData: PropTypes.func,
-    userId: PropTypes.string
+    userId: PropTypes.string,
+    isValid: PropTypes.bool
 };
 export default AddComments;
