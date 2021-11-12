@@ -10,6 +10,7 @@ import GroupList from "../../common/groupList";
 import api from "../../../api/index";
 import Loader from "../../loader";
 import SearchField from "../../common/form/searchField";
+import { useUser } from "../../../hooks/useUsers";
 
 const UsersListPage = () => {
     const pageSize = 8;
@@ -17,24 +18,20 @@ const UsersListPage = () => {
     const [professions, setProffesion] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const [users, setUsers] = useState();
+    const { users } = useUser();
     const [searchValue, setSearchValue] = useState("");
     // const maxScore = 5;
 
-    useEffect(() => {
-        api.users.fetchAll().then((data) => {
-            setUsers(data);
-        });
-    }, []);
-
     const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId));
+        // setUsers(users.filter((user) => user._id !== userId));
+        console.log("userId");
     };
     const handleToggleBookmark = (userId) => {
         const newUsers = [...users];
         const indexObj = newUsers.findIndex((user) => user._id === userId);
         newUsers[indexObj].bookmark = !newUsers[indexObj].bookmark;
-        setUsers(newUsers);
+        // setUsers(newUsers);
+        console.log("newUsers", newUsers);
     };
     useEffect(() => {
         api.professions.fetchAll().then((data) => {

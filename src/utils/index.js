@@ -13,3 +13,15 @@ export const getNoun = (number, one, two, five) => {
     }
     return five;
 };
+export function arrayMatch(arrString, arrObjects) {
+    const arr = [];
+    for (let i = 0; i < arrString.length; ++i) {
+        for (let j = 0; j < arrObjects.length; ++j) {
+            if (arrString[i] === arrObjects[j]._id) {
+                arr.push(arrObjects[j]);
+            }
+        }
+    }
+
+    return arr; // Return the arr elements
+}

@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import Table, { TableBody, TableHeader } from "../common/table";
 import Bookmark from "../common/bookmark";
-import QualitiesList from "./quialities";
+// import QualitiesList from "./quialities";
+import Profession from "./profession";
+import Qualities from "./qualities";
 
 const UsersTable = ({
     users,
@@ -18,11 +20,11 @@ const UsersTable = ({
         },
         qualities: {
             name: "Качества",
-            component: (user) => <QualitiesList qualities={user.qualities} />
+            component: (user) => <Qualities array={user.qualities} />
         },
         profession: {
-            path: "profession.name",
-            name: "Профессия"
+            name: "Профессия",
+            component: (user) => <Profession id={user.profession} />
         },
         completedMeetings: {
             path: "completedMeetings",
