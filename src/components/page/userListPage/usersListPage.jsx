@@ -8,7 +8,7 @@ import Pagination from "../../common/pagination";
 import { paginate } from "../../../utils/paginate";
 import GroupList from "../../common/groupList";
 import api from "../../../api/index";
-import Loader from "../../loader";
+import Loader from "../../common/loader";
 import SearchField from "../../common/form/searchField";
 import { useUser } from "../../../hooks/useUsers";
 
@@ -19,6 +19,7 @@ const UsersListPage = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const { users } = useUser();
+    console.log("users listPage", users);
     const [searchValue, setSearchValue] = useState("");
     // const maxScore = 5;
 
@@ -74,9 +75,14 @@ const UsersListPage = () => {
             [sortBy.order]
         );
 
-        const searchUsers = sortedUsers.filter((user) =>
-            user.name.toLowerCase().includes(searchValue.toLowerCase().trim())
-        );
+        // ВРЕМЕННО! СОРТИРОВКА по наличию имени у объекта. т.к. на данный момент в форме регистрации пльзователя не добавляется name
+        const searchUsers = sortedUsers
+            .filter((user) => user.name)
+            .filter((user) =>
+                user.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase().trim())
+            );
 
         const usersCrop = paginate(searchUsers, currentPage, pageSize);
 

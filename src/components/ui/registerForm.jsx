@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
-import API from "../../api";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
+import { useQualities } from "../../hooks/useQualities";
+import { useProfessions } from "../../hooks/useProfession";
+import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 const RegisterForm = () => {
+    const history = useHistory();
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -17,17 +21,22 @@ const RegisterForm = () => {
         qualities: [],
         licence: false
     });
-    const [professions, setProffesion] = useState();
-    const [qualities, setQualities] = useState({});
+    const { signUp } = useAuth();
+    const { professions } = useProfessions();
+    const { qualities } = useQualities();
+
+    const qualitiesList = qualities.map((q) => ({
+        label: q.name,
+        value: q._id
+    }));
+
     const [errors, setErrors] = useState({});
-    const [touched, setTouched] = useState({});
 
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
-        setTouched((prevState) => ({ ...prevState, [target.name]: 1 }));
     };
 
     const validatorConfig = {
@@ -76,24 +85,23 @@ const RegisterForm = () => {
     useEffect(() => {
         validate();
     }, [data]);
-    useEffect(() => {
-        API.professions.fetchAll().then((data) => {
-            setProffesion(data);
-        });
-        API.qualities.fetchAll().then((data) => {
-            setQualities(data);
-        });
-    }, []);
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setData({ email: "", password: "", profession: "" });
-        setTouched({});
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
+        const newData = {
+            ...data,
+            qualities: data.qualities.map((q) => q.value)
+        };
+        try {
+            await signUp(newData);
+            history.push("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
 
     return (
@@ -106,7 +114,6 @@ const RegisterForm = () => {
                     name="email"
                     onChange={handleChange}
                     value={data.email}
-                    touched={touched.email}
                     error={errors.email}
                 />
                 <TextField
@@ -115,7 +122,6 @@ const RegisterForm = () => {
                     name="password"
                     onChange={handleChange}
                     value={data.password}
-                    touched={touched.password}
                     error={errors.password}
                 />
                 <SelectField
@@ -126,7 +132,6 @@ const RegisterForm = () => {
                     value={data.profession}
                     error={errors.profession}
                     label="Выберите вашу профессию"
-                    touched={touched.profession}
                 />
                 <RadioField
                     options={[
@@ -140,7 +145,7 @@ const RegisterForm = () => {
                     name="sex"
                 />
                 <MultiSelectField
-                    options={qualities}
+                    options={qualitiesList}
                     onChange={handleChange}
                     defaultValue={data.qualities}
                     label="Выберите ваши качества"

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const TextField = ({ type, label, name, value, onChange, error, touched }) => {
+const TextField = ({ type, label, name, value, onChange, error }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
     const getInputClasses = () => {
-        return "form-control " + (error && touched ? "is-invalid" : "");
+        return "form-control " + (error ? "is-invalid" : "");
     };
 
     const toggleShowPassword = () => {
@@ -43,9 +43,7 @@ const TextField = ({ type, label, name, value, onChange, error, touched }) => {
                         ></i>
                     </button>
                 )}
-                {error && touched && (
-                    <div className="invalid-feedback">{error}</div>
-                )}
+                {error && <div className="invalid-feedback">{error}</div>}
             </div>
         </div>
     );
@@ -57,8 +55,7 @@ TextField.propTypes = {
     name: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    error: PropTypes.string,
-    touched: PropTypes.number
+    error: PropTypes.string
 };
 
 export default TextField;

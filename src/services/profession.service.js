@@ -4,8 +4,8 @@ const professionEndPoint = "profession/";
 
 const professionService = {
     get: async () => {
-        const { data } = await httpService.get(professionEndPoint);
-        return data;
+        const req = await httpService.get(professionEndPoint);
+        return req.data;
     }
 };
 export default professionService;

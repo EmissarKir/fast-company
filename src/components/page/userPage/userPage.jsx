@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../../api";
-import Loader from "../../loader";
+import Loader from "../../common/loader";
 import QualitiesList from "../../ui/quialities";
 import CommentsList from "../../ui/commentsList";
 import { validator } from "../../../utils/validator";

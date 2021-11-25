@@ -2,22 +2,23 @@ import React, { useEffect, useState } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
+import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router";
 
 const LoginForm = () => {
+    const history = useHistory();
     const [data, setData] = useState({
         email: "",
-        password: "",
-        stayOn: false
+        password: ""
     });
     const [errors, setErrors] = useState({});
-    const [touched, setTouched] = useState({});
+    const { logIn } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
-        setTouched((prevState) => ({ ...prevState, [target.name]: 1 }));
     };
 
     const validatorConfig = {
@@ -58,13 +59,16 @@ const LoginForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setData({ email: "", password: "" });
-        setTouched({});
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
+        try {
+            await logIn(data);
+            history.push("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
 
     return (
@@ -75,18 +79,16 @@ const LoginForm = () => {
                     type="text"
                     label="Электронная почта"
                     name="email"
-                    handleChange={handleChange}
+                    onChange={handleChange}
                     value={data.email}
-                    touched={touched.email}
                     error={errors.email}
                 />
                 <TextField
                     type="password"
                     label="Пароль"
                     name="password"
-                    handleChange={handleChange}
+                    onChange={handleChange}
                     value={data.password}
-                    touched={touched.password}
                     error={errors.password}
                 />
                 <CheckBoxField

@@ -7,7 +7,7 @@ import api from "../../../api";
 import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
-import Loader from "../../loader";
+import Loader from "../../common/loader";
 
 /*
     //1. data.profession передается только _id, поэтому профессия не отображается в таблице

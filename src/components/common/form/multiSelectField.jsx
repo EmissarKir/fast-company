@@ -7,23 +7,13 @@ const MultiSelectField = ({ label, options, onChange, name, defaultValue }) => {
         onChange({ name: name, value });
     };
 
-    // преобразование
-    const modifedDefault = defaultValue.map((item) => ({
-        value: item._id,
-        label: item.name,
-        color: item.color
-    }));
-
     const optionsArray =
         !Array.isArray(options) && typeof options === "object"
             ? Object.keys(options).map((optionName) => ({
                   value: options[optionName]._id,
-                  label: options[optionName].name,
-                  color: options[optionName].color
+                  label: options[optionName].name
               }))
             : options;
-    console.log("defaultValue", defaultValue);
-    console.log("modifedDefault", modifedDefault);
 
     return (
         <div className="mb-4">
@@ -37,7 +27,7 @@ const MultiSelectField = ({ label, options, onChange, name, defaultValue }) => {
                 className="basic-multi-select"
                 classNamePrefix="select"
                 onChange={handleChange}
-                defaultValue={modifedDefault}
+                defaultValue={defaultValue}
                 name={name}
             />
         </div>

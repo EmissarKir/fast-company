@@ -1,82 +1,59 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-
+import PropTypes from "prop-types";
 import qualityService from "../services/quality.service";
-import { arrayMatch } from "../utils";
 
-const QualitiesContext = React.createContext();
+const QualitiesContex = React.createContext();
 
 export const useQualities = () => {
-    return useContext(QualitiesContext);
+    return useContext(QualitiesContex);
 };
 
 export const QualitiesProvider = ({ children }) => {
     const [qualities, setQualities] = useState([]);
-    const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        getQualitiesList();
+        const getQualities = async () => {
+            try {
+                const { content } = await qualityService.fetchAll();
+                setQualities(content);
+                setLoading(false);
+            } catch (error) {
+                errorCatcher(error);
+            }
+        };
+        getQualities();
     }, []);
+    const getQuality = (id) => {
+        return qualities.find((q) => q._id === id);
+    };
+
+    function errorCatcher(error) {
+        const { message } = error.response.data;
+        setError(message);
+    }
     useEffect(() => {
         if (error !== null) {
             toast(error);
             setError(null);
         }
     }, [error]);
-    function errorCatcher(error) {
-        const { message } = error.response.data;
-        setError(message);
-        setLoading(false);
-    }
-    // Array
-    // [
-    //     "618e5b58e0f168d0ffbd7265",
-    //     "618e5b58e0f168d0ffbd726b"
-    // ]
-    // qualities
-    // [
-    //     {
-    //         "_id": "618e5b58e0f168d0ffbd7263",
-    //         "name": "Нудила",
-    //         "color": "primary",
-    //         "createdAt": "2021-11-12T12:17:28.794Z",
-    //         "updatedAt": "2021-11-12T12:17:28.794Z",
-    //         "__v": 0
-    //     },
-    //     {
-    //         "_id": "618e5b58e0f168d0ffbd7265",
-    //         "name": "Странный",
-    //         "color": "secondary",
-    //         "createdAt": "2021-11-12T12:17:28.795Z",
-    //         "updatedAt": "2021-11-12T12:17:28.795Z",
-    //         "__v": 0
-    //     },
-    // ]
-
-    function getQualities(array) {
-        const userQualities = arrayMatch(array, qualities);
-        return userQualities;
-    }
-    async function getQualitiesList() {
-        try {
-            const { content } = await qualityService.get();
-            setQualities(content);
-            setLoading(false);
-        } catch (error) {
-            errorCatcher(error);
-        }
-    }
 
     return (
-        <QualitiesContext.Provider
-            value={{ qualities, isLoading, getQualities }}
+        <QualitiesContex.Provider
+            value={{
+                qualities,
+                getQuality,
+                isLoading
+            }}
         >
             {children}
-        </QualitiesContext.Provider>
+        </QualitiesContex.Provider>
     );
 };
+
 QualitiesProvider.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),

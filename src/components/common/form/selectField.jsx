@@ -7,7 +7,6 @@ const SelectField = ({
     defaultOption,
     options,
     name,
-    touched,
     error
 }) => {
     const handleChange = ({ target }) => {
@@ -18,7 +17,7 @@ const SelectField = ({
     };
 
     const getInputClasses = () => {
-        return "form-select " + (error && touched ? "is-invalid" : "");
+        return "form-select " + (error ? "is-invalid" : "");
     };
 
     return (
@@ -45,9 +44,7 @@ const SelectField = ({
                         );
                     })}
             </select>
-            {error && touched && (
-                <div className="invalid-feedback">{error}</div>
-            )}
+            {error && <div className="invalid-feedback">{error}</div>}
         </div>
     );
 };
@@ -58,8 +55,7 @@ SelectField.propTypes = {
     defaultOption: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string,
-    options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    touched: PropTypes.number
+    options: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default SelectField;

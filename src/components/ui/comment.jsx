@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { timeConverter } from "../../utils/timeConverter";
 import API from "../../api";
-import Loader from "../loader";
+import Loader from "../common/loader";
 
 const Comment = ({ comment, onClick }) => {
     const [authorComment, setAuthorComment] = useState();
