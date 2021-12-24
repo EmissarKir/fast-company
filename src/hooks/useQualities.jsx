@@ -14,26 +14,28 @@ export const QualitiesProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getQualities = async () => {
-            try {
-                const { content } = await qualityService.fetchAll();
-                setQualities(content);
-                setLoading(false);
-            } catch (error) {
-                errorCatcher(error);
-            }
-        };
-        getQualities();
-    }, []);
-    const getQuality = (id) => {
-        return qualities.find((q) => q._id === id);
-    };
+    async function getQualities() {
+        try {
+            const { content } = await qualityService.fetchAll();
+            setQualities(content);
+            setLoading(false);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    }
 
     function errorCatcher(error) {
         const { message } = error.response.data;
         setError(message);
     }
+    const getQuality = (id) => {
+        return qualities.find((q) => q._id === id);
+    };
+
+    useEffect(() => {
+        getQualities();
+    }, []);
+
     useEffect(() => {
         if (error !== null) {
             toast(error);

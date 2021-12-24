@@ -7,38 +7,31 @@ import SearchStatus from "../../ui/searchStatus";
 import Pagination from "../../common/pagination";
 import { paginate } from "../../../utils/paginate";
 import GroupList from "../../common/groupList";
-import api from "../../../api/index";
 import Loader from "../../common/loader";
 import SearchField from "../../common/form/searchField";
 import { useUser } from "../../../hooks/useUsers";
+import { useProfessions } from "../../../hooks/useProfession";
+import { useAuth } from "../../../hooks/useAuth";
 
 const UsersListPage = () => {
-    const pageSize = 8;
+    const { users } = useUser();
+    const { currentUser } = useAuth();
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProffesion] = useState();
+    const { professions, isLoading: professionsLoading } = useProfessions();
+
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const { users } = useUser();
-    console.log("users listPage", users);
+
     const [searchValue, setSearchValue] = useState("");
+    const pageSize = 8;
     // const maxScore = 5;
 
-    const handleDelete = (userId) => {
-        // setUsers(users.filter((user) => user._id !== userId));
-        console.log("userId");
-    };
     const handleToggleBookmark = (userId) => {
         const newUsers = [...users];
         const indexObj = newUsers.findIndex((user) => user._id === userId);
         newUsers[indexObj].bookmark = !newUsers[indexObj].bookmark;
         // setUsers(newUsers);
-        console.log("newUsers", newUsers);
     };
-    useEffect(() => {
-        api.professions.fetchAll().then((data) => {
-            setProffesion(data);
-        });
-    }, []);
 
     useEffect(() => {
         setSelectedProf();
@@ -64,33 +57,38 @@ const UsersListPage = () => {
     };
 
     if (users) {
-        const filtredUsers = selectedProf
-            ? users.filter((user) => user.profession.name === selectedProf.name)
-            : users;
-        const count = filtredUsers.length;
-
+        function filterUsers(data) {
+            const filterData = searchValue
+                ? data.filter(
+                      (user) =>
+                          user.name
+                              .toLowerCase()
+                              .indexOf(searchValue.toLowerCase()) !== -1
+                  )
+                : selectedProf
+                ? data.filter(
+                      (user) =>
+                          JSON.stringify(user.profession) ===
+                          JSON.stringify(selectedProf)
+                  )
+                : data;
+            return filterData.filter((item) => item._id !== currentUser._id);
+        }
+        const filteredUsers = filterUsers(users);
+        const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
-            filtredUsers,
+            filteredUsers,
             [sortBy.path],
             [sortBy.order]
         );
 
-        // ВРЕМЕННО! СОРТИРОВКА по наличию имени у объекта. т.к. на данный момент в форме регистрации пльзователя не добавляется name
-        const searchUsers = sortedUsers
-            .filter((user) => user.name)
-            .filter((user) =>
-                user.name
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase().trim())
-            );
-
-        const usersCrop = paginate(searchUsers, currentPage, pageSize);
+        const usersCrop = paginate(sortedUsers, currentPage, pageSize);
 
         return (
             <div className="container-md mt-2">
                 <div className="row">
                     <div className="col-md-3">
-                        {professions && (
+                        {!professionsLoading && (
                             <GroupList
                                 items={professions}
                                 selectItem={selectedProf}
@@ -114,7 +112,6 @@ const UsersListPage = () => {
                                 users={usersCrop}
                                 onSort={handleSort}
                                 selectedSort={sortBy}
-                                onDelete={handleDelete}
                                 onToggleBookmark={handleToggleBookmark}
                             />
                         )}

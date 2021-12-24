@@ -25,3 +25,10 @@ export function arrayMatch(arrString, arrObjects) {
 
     return arr; // Return the arr elements
 }
+
+export function transformForReactSelect(array) {
+    return array.map((q) => ({
+        label: q.name,
+        value: q._id
+    }));
+}

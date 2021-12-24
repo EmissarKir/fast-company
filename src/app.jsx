@@ -9,6 +9,8 @@ import Users from "./layouts/users";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualitiesProvider } from "./hooks/useQualities";
 import AuthProvider from "./hooks/useAuth";
+import ProtectedRoute from "./components/common/protectedRoute";
+import LogOut from "./layouts/logOut";
 
 const App = () => {
     return (
@@ -19,10 +21,11 @@ const App = () => {
                     <QualitiesProvider>
                         <ProfessionProvider>
                             <Route path="/login/:type?" component={Login} />
-                            <Route
+                            <ProtectedRoute
                                 path="/users/:userId?/:edit?"
                                 component={Users}
                             />
+                            <Route path="/logout" component={LogOut} />
                             <Route path="/" exact component={Main} />
                         </ProfessionProvider>
                     </QualitiesProvider>

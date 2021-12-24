@@ -38,8 +38,11 @@ const SelectField = ({
                 {options &&
                     options.map((optionName) => {
                         return (
-                            <option value={optionName._id} key={optionName._id}>
-                                {optionName.name}
+                            <option
+                                value={optionName.value}
+                                key={optionName.value}
+                            >
+                                {optionName.label}
                             </option>
                         );
                     })}
