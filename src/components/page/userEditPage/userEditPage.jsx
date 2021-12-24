@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useHistory } from "react-router-dom";
 
@@ -16,7 +16,6 @@ import { useQualities } from "../../../hooks/useQualities";
 import { useAuth } from "../../../hooks/useAuth";
 
 const UserEditPage = ({ userId }) => {
-    const renderCount = useRef(0);
     const history = useHistory();
 
     const { currentUser, updateCurrentUser } = useAuth();
@@ -83,9 +82,6 @@ const UserEditPage = ({ userId }) => {
     useEffect(() => {
         setData(initialState);
     }, []);
-    useEffect(() => {
-        renderCount.current++;
-    });
 
     useEffect(() => {
         validate();
@@ -111,8 +107,6 @@ const UserEditPage = ({ userId }) => {
         await updateCurrentUser(newData);
         history.push(`/users/${userId}`);
     };
-
-    console.log("renderCount", renderCount.current);
 
     return (
         <div className="container mt-5">
