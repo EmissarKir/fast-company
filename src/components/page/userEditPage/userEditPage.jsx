@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
@@ -12,7 +13,6 @@ import { validator } from "../../../utils/validator";
 import { transformForReactSelect } from "../../../utils";
 
 import { useAuth } from "../../../hooks/useAuth";
-import { useSelector } from "react-redux";
 import {
     getQualities,
     getQualitiesLoadingStatus
@@ -20,7 +20,7 @@ import {
 import {
     getProfessions,
     getProfessionsLoadingStatus
-} from "../../../store/profession";
+} from "../../../store/professions";
 
 const UserEditPage = ({ userId }) => {
     const history = useHistory();
@@ -90,19 +90,23 @@ const UserEditPage = ({ userId }) => {
             return Object.keys(errors).length === 0;
         }
     };
-    useEffect(() => {
-        setData(initialState);
-    }, []);
 
     useEffect(() => {
         validate();
     }, [data]);
 
     useEffect(() => {
-        if (data._id && professionsLoading && qualitiesLoading) {
+        if (currentUser && !professionsLoading && !qualitiesLoading && !data) {
+            setData(initialState);
             setLoading(false);
         }
-    }, []);
+    }, [professionsLoading, qualitiesLoading, currentUser, data]);
+
+    useEffect(() => {
+        if (data && isLoading) {
+            setLoading(false);
+        }
+    }, [data]);
 
     const isValid = Object.keys(errors).length === 0;
 

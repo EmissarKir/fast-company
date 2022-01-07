@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 
 import { useAuth } from "../../hooks/useAuth";
-import { getProfessionById } from "../../store/profession";
+import { getProfessionById } from "../../store/professions";
 
 const UserCard = ({ user }) => {
     const history = useHistory();

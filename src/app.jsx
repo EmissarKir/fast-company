@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/common/protectedRoute";
 import LogOut from "./layouts/logOut";
 
 import { loadQualitiesList } from "./store/qualities";
-import { loadProfessionsList } from "./store/profession";
+import { loadProfessionsList } from "./store/professions";
 
 const App = () => {
     const dispatch = useDispatch();

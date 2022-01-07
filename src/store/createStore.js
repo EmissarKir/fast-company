@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import professionsReducer from "./profession";
+import professionsReducer from "./professions";
 import qualitiesReducer from "./qualities";
 
 const rootReducer = combineReducers({

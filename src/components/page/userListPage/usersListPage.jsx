@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import {
     getProfessions,
     getProfessionsLoadingStatus
-} from "../../../store/profession";
+} from "../../../store/professions";
 
 const UsersListPage = () => {
     const { users } = useUser();

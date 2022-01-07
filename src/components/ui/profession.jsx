@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import {
     getProfessionById,
     getProfessionsLoadingStatus
-} from "../../store/profession";
+} from "../../store/professions";
 
 const Profession = ({ id }) => {
     const { name: profName } = useSelector(getProfessionById(id));
