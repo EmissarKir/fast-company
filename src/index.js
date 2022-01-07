@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import "./index.css";
@@ -8,15 +8,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import reportWebVitals from "./reportWebVitals";
 import App from "./app";
 import { createStore } from "./store/createStore";
+import history from "./utils/history";
 
 const store = createStore();
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
+            <Router history={history}>
                 <App />
-            </BrowserRouter>
+            </Router>
         </Provider>
     </React.StrictMode>,
     document.getElementById("root")

@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { useSelector } from "react-redux";
 
 import UsersTable from "../../ui/usersTable";
 import SearchStatus from "../../ui/searchStatus";
 import Pagination from "../../common/pagination";
-import { paginate } from "../../../utils/paginate";
 import GroupList from "../../common/groupList";
 import Loader from "../../common/loader";
 import SearchField from "../../common/form/searchField";
-import { useUser } from "../../../hooks/useUsers";
-import { useAuth } from "../../../hooks/useAuth";
-import { useSelector } from "react-redux";
+
+import { paginate } from "../../../utils/paginate";
 import {
     getProfessions,
     getProfessionsLoadingStatus
 } from "../../../store/professions";
+import { getCurrentUserId, getUsersList } from "../../../store/users";
 
 const UsersListPage = () => {
-    const { users } = useUser();
-    const { currentUser } = useAuth();
+    const users = useSelector(getUsersList());
+
+    const currentUser = useSelector(getCurrentUserId());
     const [currentPage, setCurrentPage] = useState(1);
 
     const professions = useSelector(getProfessions());
@@ -78,7 +79,7 @@ const UsersListPage = () => {
                           JSON.stringify(selectedProf)
                   )
                 : data;
-            return filterData.filter((item) => item._id !== currentUser._id);
+            return filterData.filter((item) => item._id !== currentUser);
         }
         const filteredUsers = filterUsers(users);
         const count = filteredUsers.length;

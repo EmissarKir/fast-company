@@ -1,4 +1,5 @@
 import React from "react";
+
 import useMockData from "../utils/mockData";
 
 const Main = () => {

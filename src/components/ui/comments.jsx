@@ -1,16 +1,37 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { orderBy } from "lodash";
-import React from "react";
+import { useParams } from "react-router-dom";
+
 import CommentsList, { AddCommentForm } from "../common/comments";
-import { useComments } from "../../hooks/useComments";
+import Loader from "../common/loader";
+
+import {
+    createComment,
+    getComments,
+    getCommentsLoadingStatus,
+    loadCommentsList,
+    removeComment
+} from "../../store/comments";
+import { getCurrentUserId } from "../../store/users";
 
 const Comments = () => {
-    const { createComment, comments, removeComment } = useComments();
+    const { userId } = useParams();
+    const currentUserId = useSelector(getCurrentUserId());
+
+    const dispatch = useDispatch();
+    const isLoading = useSelector(getCommentsLoadingStatus());
+    const comments = useSelector(getComments());
+
+    useEffect(() => {
+        dispatch(loadCommentsList(userId));
+    }, [userId]);
 
     const handleSubmit = (data) => {
-        createComment(data);
+        dispatch(createComment({ data, userId, currentUserId }));
     };
-    const handleRemoveComment = async (id) => {
-        await removeComment(id);
+    const handleRemoveComment = (commentId) => {
+        dispatch(removeComment(commentId));
     };
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (
@@ -25,10 +46,14 @@ const Comments = () => {
                     <div className="card-body ">
                         <h2>Comments</h2>
                         <hr />
-                        <CommentsList
-                            comments={sortedComments}
-                            onRemove={handleRemoveComment}
-                        />
+                        {!isLoading ? (
+                            <CommentsList
+                                comments={sortedComments}
+                                onRemove={handleRemoveComment}
+                            />
+                        ) : (
+                            <Loader />
+                        )}
                     </div>
                 </div>
             )}

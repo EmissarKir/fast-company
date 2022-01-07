@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 
-import { useAuth } from "../../hooks/useAuth";
 import { getProfessionById } from "../../store/professions";
+import { getCurrentUserId } from "../../store/users";
 
 const UserCard = ({ user }) => {
     const history = useHistory();
-    const { currentUser } = useAuth();
+    const currentUserId = useSelector(getCurrentUserId());
+
     const { name: profName } = useSelector(getProfessionById(user.profession));
 
     const handleClick = () => {
@@ -17,7 +18,7 @@ const UserCard = ({ user }) => {
     return (
         <div className="card mb-3">
             <div className="card-body">
-                {currentUser._id === user._id ? (
+                {currentUserId === user._id ? (
                     <button
                         className="position-absolute top-0 end-0 btn btn-light btn-sm"
                         onClick={handleClick}

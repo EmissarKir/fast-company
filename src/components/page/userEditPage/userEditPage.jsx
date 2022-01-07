@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
@@ -12,7 +12,6 @@ import Loader from "../../common/loader";
 import { validator } from "../../../utils/validator";
 import { transformForReactSelect } from "../../../utils";
 
-import { useAuth } from "../../../hooks/useAuth";
 import {
     getQualities,
     getQualitiesLoadingStatus
@@ -21,11 +20,12 @@ import {
     getProfessions,
     getProfessionsLoadingStatus
 } from "../../../store/professions";
+import { getCurrentUserData, updateUser } from "../../../store/users";
 
 const UserEditPage = ({ userId }) => {
-    const history = useHistory();
+    const dispatch = useDispatch();
 
-    const { currentUser, updateCurrentUser } = useAuth();
+    const currentUser = useSelector(getCurrentUserData());
 
     const professions = useSelector(getProfessions());
     const professionsLoading = useSelector(getProfessionsLoadingStatus());
@@ -110,7 +110,7 @@ const UserEditPage = ({ userId }) => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
@@ -119,8 +119,7 @@ const UserEditPage = ({ userId }) => {
             ...data,
             qualities: data.qualities.map((item) => item.value)
         };
-        await updateCurrentUser(newData);
-        history.push(`/users/${userId}`);
+        dispatch(updateUser(newData));
     };
 
     return (

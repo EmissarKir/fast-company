@@ -13,7 +13,7 @@ const AddCommentForm = ({ onSubmit }) => {
             [target.name]: target.value
         }));
     };
-    const validatorConfog = {
+    const validatorConfig = {
         content: {
             isRequired: {
                 message: "Сообщение не может быть пустым"
@@ -22,7 +22,7 @@ const AddCommentForm = ({ onSubmit }) => {
     };
 
     const validate = () => {
-        const errors = validator(data, validatorConfog);
+        const errors = validator(data, validatorConfig);
 
         setErrors(errors);
         return Object.keys(errors).length === 0;
