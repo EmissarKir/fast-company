@@ -10,14 +10,20 @@ import GroupList from "../../common/groupList";
 import Loader from "../../common/loader";
 import SearchField from "../../common/form/searchField";
 import { useUser } from "../../../hooks/useUsers";
-import { useProfessions } from "../../../hooks/useProfession";
 import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import {
+    getProfessions,
+    getProfessionsLoadingStatus
+} from "../../../store/profession";
 
 const UsersListPage = () => {
     const { users } = useUser();
     const { currentUser } = useAuth();
     const [currentPage, setCurrentPage] = useState(1);
-    const { professions, isLoading: professionsLoading } = useProfessions();
+
+    const professions = useSelector(getProfessions());
+    const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });

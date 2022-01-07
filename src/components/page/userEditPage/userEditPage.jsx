@@ -11,16 +11,27 @@ import Loader from "../../common/loader";
 import { validator } from "../../../utils/validator";
 import { transformForReactSelect } from "../../../utils";
 
-import { useProfessions } from "../../../hooks/useProfession";
-import { useQualities } from "../../../hooks/useQualities";
 import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import {
+    getQualities,
+    getQualitiesLoadingStatus
+} from "../../../store/qualities";
+import {
+    getProfessions,
+    getProfessionsLoadingStatus
+} from "../../../store/profession";
 
 const UserEditPage = ({ userId }) => {
     const history = useHistory();
 
     const { currentUser, updateCurrentUser } = useAuth();
-    const { professions } = useProfessions();
-    const { qualities } = useQualities();
+
+    const professions = useSelector(getProfessions());
+    const professionsLoading = useSelector(getProfessionsLoadingStatus());
+
+    const qualities = useSelector(getQualities());
+    const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
 
     const qualitiesList = transformForReactSelect(qualities);
     const professionsList = transformForReactSelect(professions);
@@ -88,7 +99,7 @@ const UserEditPage = ({ userId }) => {
     }, [data]);
 
     useEffect(() => {
-        if (data._id && professions.length > 0 && qualities.length > 0) {
+        if (data._id && professionsLoading && qualitiesLoading) {
             setLoading(false);
         }
     }, []);
